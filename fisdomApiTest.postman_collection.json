@@ -1,0 +1,254 @@
+{
+	"info": {
+		"_postman_id": "af67ee4c-7a61-4610-9aa4-e51f7e4832da",
+		"name": "fisdomApiTest",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Generating Auth Token",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"username\" : \"admin\",\r\n\"password\" : \"password123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://restful-booker.herokuapp.com/auth",
+					"protocol": "https",
+					"host": [
+						"restful-booker",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"auth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Asset booking using bookingid",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "3198216e-79ce-4e12-8e98-af9527f4dc93",
+						"exec": [
+							"",
+							"let jsonDataCommentId = pm.response.json();",
+							"//console.log(jsonDataCommentId.id);",
+							"  pm.globals.set(\"New generated commend id \", jsonDataCommentId.id);",
+							"  const response= pm.response.json();",
+							"pm.test(\"checking Booking ID\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    pm.expect(jsonData.bookingid).to.eql(jsonData.bookingid);",
+							"});",
+							"var bookingid= pm.response.json();",
+							"pm.globals.set(\"Bookingid\",bookingid.bookingid)",
+							"",
+							"pm.test(\"Test Firstname\", function () {   ",
+							"   ",
+							"    pm.expect(response.booking.firstname).to.eql(\"himani\");",
+							"});",
+							"",
+							"pm.test(\"Test lastname\", function () {  ",
+							"   ",
+							"    pm.expect(response.booking.lastname).to.eql(\"tomar\");",
+							"});",
+							"",
+							"",
+							"pm.test(\"Test totalprice\", function () {   ",
+							"   ",
+							"    pm.expect(response.booking.totalprice).to.eql(120);",
+							"});",
+							"pm.test(\"Test depositid\", function () {   ",
+							"   ",
+							"    pm.expect(response.booking.depositpaid).to.be.true;",
+							"});",
+							"",
+							"pm.test(\"Test checkindates\", function () {   // first name validation",
+							"   ",
+							"    pm.expect(response.booking.bookingdates.checkin).to.eql(\"2019-01-01\");",
+							"});",
+							"",
+							"pm.test(\"Test checkoutdates\", function () {   // first name validation",
+							"   ",
+							"    pm.expect(response.booking.bookingdates.checkout).to.eql(\"2020-01-01\");",
+							"});",
+							"",
+							"",
+							"",
+							"",
+							"",
+							"pm.test(\"Body matches string\", function () {",
+							"    pm.expect(pm.response.text()).to.include(\"additionalneeds\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"firstname\" : \"himani\",\n    \"lastname\" : \"tomar\",\n    \"totalprice\" : 120,\n    \"depositpaid\" : true,\n    \"bookingdates\" : {\n        \"checkin\" : \"2019-01-01\",\n        \"checkout\" : \"2020-01-01\"\n\t\t\t\t\t},\n\t\t\t\t\t\n\"additionalneeds\" : \"Breakfast\"\n}\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://restful-booker.herokuapp.com/booking",
+					"protocol": "https",
+					"host": [
+						"restful-booker",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"booking"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update complete bookingid",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "password123",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"firstname\" : \"James\",\n    \"lastname\" : \"Brown\",\n    \"totalprice\" : 111,\n    \"depositpaid\" : true,\n    \"bookingdates\" : {\n        \"checkin\" : \"2018-01-01\",\n        \"checkout\" : \"2019-01-01\"\n    },\n    \"additionalneeds\" : \"Breakfast\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://restful-booker.herokuapp.com/booking/:id",
+					"protocol": "https",
+					"host": [
+						"restful-booker",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"booking",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "13"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update partial booking details",
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "password123",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "token=abc123",
+						"type": "text",
+						"disabled": true
+					},
+					{
+						"key": "Accept",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"firstname\" : \"himani\",\n    \"lastname\" : \"Brown\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://restful-booker.herokuapp.com/booking/:id",
+					"protocol": "https",
+					"host": [
+						"restful-booker",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"booking",
+						":id"
+					],
+					"variable": [
+						{
+							"key": "id",
+							"value": "13"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
